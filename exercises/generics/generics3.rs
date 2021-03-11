@@ -10,30 +10,16 @@
 
 // Execute 'rustlings hint generics3' for hints!
 
-// I AM NOT DONE
-
-pub enum Grade {
-    Numeric(f32),
-    Alpha(String),
-}
-
-fn to_string(g: &Grade) -> String {
-    match g {
-        Grade::Numeric(n) => n.to_string(),
-        Grade::Alpha(s) => s.to_string(),
-    }
-}
-
-pub struct ReportCard {
-    pub grade: Grade,
+pub struct ReportCard<T> { 
+    pub grade: T,
     pub student_name: String,
     pub student_age: u8,
 }
 
-impl ReportCard {
+impl<T> ReportCard<T> where T : std::fmt::Display {
     pub fn print(&self) -> String {
         format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, to_string(&self.grade))
+            &self.student_name, &self.student_age, &self.grade)
     }
 }
 
@@ -44,7 +30,7 @@ mod tests {
     #[test]
     fn generate_numeric_report_card() {
         let report_card = ReportCard {
-            grade: Grade::Numeric(2.1),
+            grade: 2.1,
             student_name: "Tom Wriggle".to_string(),
             student_age: 12,
         };
@@ -57,7 +43,7 @@ mod tests {
     #[test]
     fn generate_alphabetic_report_card() {
         let report_card = ReportCard {
-            grade: Grade::Alpha("A+".to_string()),
+            grade: "A+",
             student_name: "Gary Plotter".to_string(),
             student_age: 11,
         };
