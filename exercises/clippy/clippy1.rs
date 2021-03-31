@@ -1,4 +1,4 @@
-// clippy1.rs
+// clippy0.rs
 // The Clippy tool is a collection of lints to analyze your code
 // so you can catch common mistakes and improve your Rust code.
 //
@@ -6,12 +6,10 @@
 // check clippy's suggestions from the output to solve the exercise.
 // Execute `rustlings hint clippy1` for hints :)
 
-// I AM NOT DONE
-
 fn main() {
     let x = 1.2331f64;
     let y = 1.2332f64;
-    if y != x {
+    if (y-x).abs() > f64::EPSILON {
         println!("Success!");
     }
 }
