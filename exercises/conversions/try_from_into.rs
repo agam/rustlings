@@ -11,8 +11,6 @@ struct Color {
     blue: u8,
 }
 
-// I AM NOT DONE
-
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
 // You need to create an implementation for a tuple of three integers,
@@ -22,22 +20,60 @@ struct Color {
 // but the slice implementation needs to check the slice length!
 // Also note that correct RGB color values must be integers in the 0..=255 range.
 
+// Helper for the conversion functions below.
+fn inRange(n: &i16) -> bool {
+    n >= &0 && n <= &255
+}
+
 // Tuple implementation
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = String;
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (r, g, b) = tuple;
+        if inRange(&r) && inRange(&g) && inRange(&b) {
+            Ok(Color {
+                red: r as u8,
+                green: g as u8,
+                blue: b as u8
+            })
+        } else {
+            Err(String::from("Numbers not in range!"))
+        }
+    }
 }
 
 // Array implementation
 impl TryFrom<[i16; 3]> for Color {
     type Error = String;
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let array_valid = arr.iter().all(|n| inRange(n));
+        if array_valid {
+            Ok(Color {
+                red: arr[0] as u8,
+                green: arr[1] as u8,
+                blue: arr[2] as u8
+            })
+        } else {
+            Err(String::from("Numbers not in range!"))
+        }
+    }
 }
 
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
     type Error = String;
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        let slice_valid = slice.len() == 3 && slice.iter().all(|n| inRange(n));
+        if slice_valid {
+            Ok(Color {
+                red: slice[0] as u8,
+                green: slice[1] as u8,
+                blue: slice[2] as u8
+            })
+        } else {
+            Err(format!("Incorrect number of elements in slice {:?}", slice.len()))
+        }
+    }
 }
 
 fn main() {
